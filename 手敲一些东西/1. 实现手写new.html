@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    //   User 构造函数
+    function User(name, age) {
+      this.name = name
+      this.age = age
+      this.show = function () {
+        console.log('自然选择号')
+      }
+      return {}
+    }
+    //   手写 new 方法
+    function _new(ctor, ...args) {
+      // 边界处理  ctor 是不是一个函数
+      if (typeof ctor !== 'function') {
+        // 抛出错误
+        throw 'ctor must be a function'
+      }
+      //   创建一个空对象
+      let obj = {}
+      // 将 传入函数的 prototype 给 obj __proto__
+      obj.__proto__ = ctor.prototype
+      // 将传入的构造函数this  指向  obj
+      const res = ctor.apply(obj, args)
+      // 判断是否是 object  且 不是null
+      let isObject = typeof res === 'object' && res !== null
+      // 判断是否是函数
+      let isFunction = typeof res === 'function'
+      // 判断 返回 res 还是 obj
+      return isObject || isFunction ? res : obj
+    }
+    const beihai = _new(User, '章北海', 35)
+    console.log(beihai)
+    beihai.show()
+  </script>
+</html>
